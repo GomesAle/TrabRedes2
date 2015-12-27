@@ -12,7 +12,15 @@ import java.util.Arrays;
  * @author AleGomes
  */
 public class Decodificador {
-
+    /*
+    1)  Ler arquivo.
+    2)  Divide a string de entrada em um vetor de blocos de 10 bytes (8 bytes de conteudo + 2 bytes de paridade).
+    3)  Calcula a paridade antiga.
+    4)  Calcula  a nova paridade.
+    5) Compara se as paridades antigas e novas são iguais.
+    6) Corrige se elas forem diferentes (se for possível).
+    7) Escreve em arquivo o resultado final.
+    */
     public void decodificar(String caminhoArquivoEntrada, String caminhoArquivoSaida) {
         String entrada = Arquivo.lerArquivo(caminhoArquivoEntrada);
         String[] superBlocos = dividirSuperBlocos(entrada); //superblocos tem 10 bytes
@@ -59,6 +67,10 @@ public class Decodificador {
     }
 
     private String[] dividirSuperBlocos(String entrada) {
+        /*
+        Qeubra a entrada em strings (superBlocos) com paridade e conteudo.
+        */
+        
         String[] blocos = new String[entrada.length() / 80 + 1];
 
         if (entrada.length() <= 64) {
@@ -78,10 +90,16 @@ public class Decodificador {
     }
 
     private String gerarParidadeAntiga(String superBloco) {
+        //O tamanho da paridade é de 2 bytes (paridade das linhas e colunas) -> 16 bits
         return superBloco.substring(0, 16);
     }
 
     private int[][] converterParaMatriz(String superBloco) {
+        /*
+        Converte o bloco string em matriz de int. 
+        Caso esteja incompleta, preenche com zeros
+        */
+        
         superBloco = superBloco.substring(16);
         int[][] conteudo = new int[8][8];
         int cont = 0;
@@ -99,6 +117,9 @@ public class Decodificador {
     }
 
     private String gerarParidade(int[][] matrizConteudo) {
+        /*
+        Calcula a nova paridade da matriz
+        */
         int[] paridadeColuna = new int[8];
         int[] paridadeLinha = new int[8];
         for (int i = 0; i < matrizConteudo.length; i++) {
@@ -122,6 +143,13 @@ public class Decodificador {
     }
 
     private String detectarECorrigirErro(String paridadeAntiga, String paridadeNova, int[][] matrizConteudo) throws UnsupportedOperationException {
+        /*
+        Compara as paridades novas e antigas:
+        Se fores iguais, não há erro.
+        Se tiver um erro, corrige.
+        Se tiver mais de um erro, informa que tem erro incorrigível.
+        */
+        
         if (paridadeAntiga.equals(paridadeNova)) {
             return gerarStringMatriz(matrizConteudo);
         }
