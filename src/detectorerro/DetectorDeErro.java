@@ -19,7 +19,6 @@ public class DetectorDeErro {
         //arg1 - caminho do arquivo de entrada para aquela operação
         //arg2 - caminho do arquivo de saida para aquela operação
 
-        /*
          //Para rodar pela linha de comando
          if (args.length > 3 || args.length < 3) {
          System.out.println("Número errado de parâmetros.");
@@ -37,7 +36,9 @@ public class DetectorDeErro {
          }
          }
          }
-         */
+
+        
+        /*
         //Para rodar pelo IDE
         
         String op = "decod";
@@ -51,5 +52,6 @@ public class DetectorDeErro {
                 decodificador.decodificar("meio.txt", "fim.txt");
             }
         }
+                */
     }
 }
